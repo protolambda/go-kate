@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// TODO duplicate
 var ZERO_G1 G1Point
 
 var GenG1 G1Point
@@ -17,7 +18,6 @@ var GenG2 G2Point
 var ZeroG1 G1Point
 var ZeroG2 G2Point
 
-// Herumi BLS doesn't offer these points to us, so we have to work around it by declaring them ourselves.
 func initG1G2() {
 	GenG1 = G1Point(*kbls.NewG1().One())
 	GenG2 = G2Point(*kbls.NewG2().One())
@@ -25,7 +25,6 @@ func initG1G2() {
 	ZeroG2 = G2Point(*kbls.NewG2().Zero())
 }
 
-// TODO types file, swap BLS with build args
 type G1Point kbls.PointG1
 
 // zeroes the point (like herumi BLS does with theirs). This is not co-factor clearing.
@@ -112,6 +111,10 @@ func EqualG2(a *G2Point, b *G2Point) bool {
 
 func ToCompressedG1(p *G1Point) []byte {
 	return kbls.NewG1().ToCompressed((*kbls.PointG1)(p))
+}
+
+func ToCompressedG2(p *G2Point) []byte {
+	return curveG2.ToCompressed((*kbls.PointG2)(p))
 }
 
 func LinCombG1(numbers []G1Point, factors []Fr) *G1Point {

@@ -1,4 +1,4 @@
-// +build !bignum_pure,!bignum_hol256,!bignum_kilic
+// +build !bignum_pure,!bignum_hol256,!bignum_kilic,!bignum_blst
 
 package bls
 
@@ -9,6 +9,7 @@ import (
 	"unsafe"
 )
 
+// TODO duplicate
 var ZERO_G1 G1Point
 
 var GenG1 G1Point
@@ -42,7 +43,6 @@ func initG1G2() {
 	ZeroG2.Z.D[1].SetInt64(0)
 }
 
-// TODO types file, swap BLS with build args
 type G1Point hbls.G1
 
 func ClearG1(x *G1Point) {
@@ -115,6 +115,10 @@ func EqualG2(a *G2Point, b *G2Point) bool {
 
 func ToCompressedG1(p *G1Point) []byte {
 	return hbls.CastToPublicKey((*hbls.G1)(p)).Serialize()
+}
+
+func ToCompressedG2(p *G2Point) []byte {
+	return hbls.CastToSign((*hbls.G2)(p)).Serialize()
 }
 
 func LinCombG1(numbers []G1Point, factors []Fr) *G1Point {
